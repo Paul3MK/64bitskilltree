@@ -1,8 +1,6 @@
 import requests as re
 import datetime
 from trie import TrieNode
-from nltk.tokenize import word_tokenize
-# from nltk import download
 
 skill_dict = {1: "Python", 2: "Vertex", 3: "java"}
 
@@ -10,8 +8,6 @@ def jobGetter():
     job = re.get("https://himalayas.app/jobs/api?limit=5")
 
     site_dump = job.json()
-
-    # site_dump["jobs"][0]["title"]
 
     job_directory = []
 
@@ -44,8 +40,6 @@ def jobChecker(job_array):
         
     return result_set
 
-# print(jobGetter())
-# download("punkt")
 job_list = jobGetter()
 print(job_list)
 print(jobChecker(job_list))

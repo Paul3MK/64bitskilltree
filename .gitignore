@@ -1,1 +1,3 @@
 scratchpad/
+*.pyc
+backend/__pycache__

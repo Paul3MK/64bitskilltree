@@ -31,7 +31,7 @@ class TrieNode:
         node = root;
         foundPhrases = []
 
-        words = textBody.split()
+        words = word_tokenize(textBody, language="english", preserve_line=False)
 
         for i in range(len(words)):
             if words[i] in node.Children:

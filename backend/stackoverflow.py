@@ -4,7 +4,7 @@ import time # in case we need time.sleep()
 
 base_url = "https://api.stackexchange.com/2.3/questions"
 
-def GetTwoYearCount(tag, base_url):
+def GetTwoYearCount(tag, base_url="https://api.stackexchange.com/2.3/questions"):
 
     current_date = datetime.datetime.now(datetime.timezone.utc)
     two_years_ago = current_date - datetime.timedelta(days=730)
@@ -33,7 +33,7 @@ def GetTwoYearCount(tag, base_url):
     return two_year_count
 
 
-def Get24HourCount(tag, base_url):
+def Get24HourCount(tag, base_url="https://api.stackexchange.com/2.3/questions"):
 
     current_date = datetime.datetime.now(datetime.timezone.utc)
     yesterday = current_date - datetime.timedelta(days=1)

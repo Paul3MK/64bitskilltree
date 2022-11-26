@@ -8,7 +8,7 @@ import urllib.parse
 
 base_url = "https://api.github.com/search/"
 
-async def getRepositories(base_url, lang):
+async def getRepositories(lang, base_url="https://api.github.com/search/"):
 
     load_dotenv()
 
@@ -33,7 +33,7 @@ async def getRepositories(base_url, lang):
 
         return response["total_count"]
 
-async def getIssues(base_url, lang):
+async def getIssues(lang, base_url="https://api.github.com/search/"):
     load_dotenv()
 
     now = dt.datetime.now(dt.timezone.utc)

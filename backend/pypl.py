@@ -1,5 +1,8 @@
 import json
 import datetime
+import pymongo
+from dotenv import load_dotenv
+from os import environ as env
 
 graphData = [
     [[2004,6,1],0.0034,0.0036,0.1008,0.0471,0.0043,0.0,0.0282,0.0,0.0003,0.0022,0.3037,0.0865,0.0,0.0,0.0016,0.0211,0.0019,0.0738,0.1875,0.0253,0.0039,0.0033,0.0008,0.0003,0.0,0.0,0.0144,0.0856],
@@ -228,11 +231,14 @@ legend = ['Date', #begin section languages
 # end section languages
 ]
 
-def pypl(lang_index, data, legend):
+def pypl(lang, data=graphData, legend=legend):
+    for l in legend:
+        if l == lang:
+            lang_index = legend.index(l)
 
     temp = {
             "lang_name": legend[lang_index],
-            "popularity": []
+            "popularity_series": []
         }
     for record in data:
         corr_date = [record[0][0], record[0][1]+1, record[0][2]]
@@ -245,12 +251,23 @@ def pypl(lang_index, data, legend):
 
 
         temp_pop = {
-                "date": int(datetime.datetime.timestamp(datetime.datetime.strptime("-".join(d), "%Y-%m-%d"))),
+                "date": datetime.datetime.strptime("-".join(d), "%Y-%m-%d"),
                 "popularity": record[lang_index]
             }
-        temp['popularity'].append(temp_pop)
+        temp['popularity_series'].append(temp_pop)
     
     return temp
+
+def loadData(data=graphData, legend=legend):
+    load_dotenv()
+    client = pymongo.MongoClient(env['LOCAL_MONGO_URI'])
+    db = client.sixtyfour2
+
+    for lang in range(1, 29):
+        collection = db["{}".format(legend[lang])]
+        # collection.delete_one({"lang_name": legend[lang]})
+        response = pypl(lang, data, legend)
+        collection.insert_one(response)
 
 def main(data, legend):
     
@@ -264,4 +281,8 @@ def main(data, legend):
         
         f.write("\n]")
 
-main(graphData, legend)
+if __name__ == "__main__":
+    # main(graphData, legend)
+    # loadData(graphData, legend)
+
+    print(pypl("JavaScript"))

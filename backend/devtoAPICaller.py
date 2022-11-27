@@ -10,7 +10,7 @@ def getTopPostsInPeriod(tag, days):
     params = {
         "page": 1,
         "per_page": 1000,
-        "tag": tag,
+        "tag": tag.lower(),
         "top": days
     }
 
@@ -31,6 +31,9 @@ def getTopPostsInPeriod(tag, days):
 
 
 
-def getTopPostsToday():
+def getTopPostsToday(lang):
     """"This is to retrieve top posts within the last day, to eke out proportions."""
-    pass
+    getTopPostsInPeriod(lang, 30)
+
+if __name__ == "__main__":
+    print(getTopPostsInPeriod("objectivec", 90))

@@ -5,23 +5,27 @@ from bs4 import BeautifulSoup
 
 def getHackernoonTagCount(tag):
 
-    composed_url = "https://hackernoon.com/tagged/"+tag
+    try:
 
-    req = requests.get(composed_url)
-    res = req.text
+        composed_url = "https://hackernoon.com/tagged/"+tag.lower()
 
-    soup = BeautifulSoup(res, 'html.parser')
-    target = soup.find(class_='tagged-header')
-    text = str(target.h1.span.small)
-    # text = text.replace("<", "")
-    # text = text.replace(">", "")
+        req = requests.get(composed_url)
+        res = req.text
 
-    regex = re.compile(r"(\d+,\d+)|(\d+)")
-    tag_count_str = regex.search(text).group()
+        soup = BeautifulSoup(res, 'html.parser')
+        target = soup.find(class_='tagged-header')
+        text = str(target.h1.span.small)
+        # text = text.replace("<", "")
+        # text = text.replace(">", "")
 
-    tag_count = tag_count_str.replace(",", "")
+        regex = re.compile(r"(\d+,\d+)|(\d+)")
+        tag_count_str = regex.search(text).group()
 
-    return int(tag_count)
+        tag_count = tag_count_str.replace(",", "")
+
+        return int(tag_count)
+    except Exception as e:
+        return 0
         
 if __name__ == "__main__":
-    print(getHackernoonTagCount("data"))
+    print(getHackernoonTagCount("memcached"))

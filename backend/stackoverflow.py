@@ -1,11 +1,14 @@
 import requests as re
 import datetime
 import time # in case we need time.sleep()
+from dotenv import load_dotenv
+from os import environ as env
 
 base_url = "https://api.stackexchange.com/2.3/questions"
 
 def GetTwoYearCount(tag, base_url="https://api.stackexchange.com/2.3/questions"):
-
+    load_dotenv()
+    
     current_date = datetime.datetime.now(datetime.timezone.utc)
     two_years_ago = current_date - datetime.timedelta(days=730)
     cur_date = int(current_date.timestamp())
@@ -20,7 +23,8 @@ def GetTwoYearCount(tag, base_url="https://api.stackexchange.com/2.3/questions")
         "sort": "activity",
         "tagged": tag,
         "site": "stackoverflow",
-        "filter": "!nKzQUR693x"
+        "filter": "!nKzQUR693x",
+        "key": env["STACKOVERFLOW_KEY"]
         
     }
 
@@ -34,6 +38,7 @@ def GetTwoYearCount(tag, base_url="https://api.stackexchange.com/2.3/questions")
 
 
 def Get24HourCount(tag, base_url="https://api.stackexchange.com/2.3/questions"):
+    load_dotenv()
 
     current_date = datetime.datetime.now(datetime.timezone.utc)
     yesterday = current_date - datetime.timedelta(days=1)
@@ -49,7 +54,8 @@ def Get24HourCount(tag, base_url="https://api.stackexchange.com/2.3/questions"):
         "sort": "activity",
         "tagged": tag,
         "site": "stackoverflow",
-        "filter": "!nKzQUR693x"
+        "filter": "!nKzQUR693x",
+        "key": env["STACKOVERFLOW_KEY"]
         
     }
 
@@ -61,8 +67,8 @@ def Get24HourCount(tag, base_url="https://api.stackexchange.com/2.3/questions"):
 
     return today_count
 
-def GetWeekStats(tag: str, base_url: str) -> "list[dict]":
-
+def GetWeekStats(tag: str, base_url: str="https://api.stackexchange.com/2.3/questions") -> "list[dict]":
+    load_dotenv()
     now = datetime.datetime.now(datetime.timezone.utc)
     today = datetime.datetime(year=now.year, month=now.month, day=now.day)
 
@@ -86,7 +92,8 @@ def GetWeekStats(tag: str, base_url: str) -> "list[dict]":
             "sort": "activity",
             "tagged": tag,
             "site": "stackoverflow",
-            "filter": "!nKzQUR693x"
+            "filter": "!nKzQUR693x",
+            "key": env["STACKOVERFLOW_KEY"]
             
         }
 
@@ -103,10 +110,6 @@ def GetWeekStats(tag: str, base_url: str) -> "list[dict]":
         })
 
     # keep an eye on quota
-    weekly_stats.append({
-        "quota_max": quota[0],
-        "quota_remaining": quota[1]
-    })
 
     return weekly_stats
     

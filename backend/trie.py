@@ -21,7 +21,7 @@ class TrieNode:
     def addPhrase(self, root, phrase, phraseId): # root will have to be a TrieNode
         node = root
         # node.Children = {}
-        words = word_tokenize(phrase, language="english", preserve_line=False) # this change truly fixes issue #1
+        words = word_tokenize(phrase.lower(), language="english", preserve_line=False) # this change truly fixes issue #1
         
         for i in range(len(words)):
             if words[i] not in node.Children:
@@ -37,12 +37,12 @@ class TrieNode:
         node = root
         foundPhrases = []
 
-        words = word_tokenize(textBody, language="english", preserve_line=False)
+        words = word_tokenize(textBody.lower(), language="english", preserve_line=False)
 
         for i in range(len(words)):
             if words[i] in node.Children:
                 node = node.Children[words[i]]
-                print(words[i])
+                # print(words[i])
                 ++i
             else:
                 if node.PhraseId != -1:

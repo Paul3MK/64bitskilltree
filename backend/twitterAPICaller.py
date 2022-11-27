@@ -25,4 +25,4 @@ def getAllTweetCounts(skill):
     tweet_count = requests.get(url="https://api.twitter.com/2/tweets/counts/recent", params=params, headers=headers)
     res = tweet_count.json()
 
-    return res["meta"]["total_tweet_count"]
+    return res
